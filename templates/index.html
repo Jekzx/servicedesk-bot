@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Desk WhatsApp Automation & Diagnostics Bot</title>
+    <meta name="description" content="Painel de controle de Service Desk com automação N1 via WhatsApp, triagem inteligente de chamados e diagnósticos de infraestrutura.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Top Navbar -->
+        <header class="top-nav">
+            <div class="brand-section">
+                <div class="logo-icon">🤖</div>
+                <div>
+                    <h1 class="brand-title">ServiceDesk <span class="accent-text">AI Automation</span></h1>
+                    <p class="brand-subtitle">WhatsApp N1 Bot & Real-Time Diagnostics Engine</p>
+                </div>
+            </div>
+            
+            <div class="nav-controls">
+                <div class="system-status-badge" id="systemGlobalStatus">
+                    <span class="status-pulse"></span>
+                    <span id="systemStatusText">Sistemas Operacionais</span>
+                </div>
+
+                <button id="openBotNavBtn" class="nav-btn bot-trigger-btn">
+                    <span class="btn-wa-icon">💬</span>
+                    <span>Testar Bot WhatsApp</span>
+                    <span class="bot-badge-pill">N1</span>
+                </button>
+
+                <a href="/docs" target="_blank" class="nav-btn api-btn">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                    Swagger Docs
+                </a>
+
+                <button id="refreshDataBtn" class="nav-btn refresh-btn">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"></path><path d="M1 20v-6h6"></path><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                    Atualizar
+                </button>
+            </div>
+        </header>
+
+        <!-- KPI Metrics Grid -->
+        <section class="metrics-grid">
+            <div class="metric-card card-total">
+                <div class="metric-info">
+                    <span class="metric-label">Total de Chamados</span>
+                    <h3 class="metric-value" id="kpiTotalTickets">0</h3>
+                </div>
+                <div class="metric-icon">📋</div>
+            </div>
+            <div class="metric-card card-auto">
+                <div class="metric-info">
+                    <span class="metric-label">Auto-Resolução N1</span>
+                    <h3 class="metric-value" id="kpiAutoResolved">0 <span class="metric-sub" id="kpiAutoRate">(0%)</span></h3>
+                </div>
+                <div class="metric-icon">⚡</div>
+            </div>
+            <div class="metric-card card-open">
+                <div class="metric-info">
+                    <span class="metric-label">Abertos / Em Fila</span>
+                    <h3 class="metric-value" id="kpiOpenTickets">0</h3>
+                </div>
+                <div class="metric-icon">🟡</div>
+            </div>
+            <div class="metric-card card-critical">
+                <div class="metric-info">
+                    <span class="metric-label">Incidentes P1 (Críticos)</span>
+                    <h3 class="metric-value text-red" id="kpiCriticalP1">0</h3>
+                </div>
+                <div class="metric-icon">🚨</div>
+            </div>
+        </section>
+
+        <!-- Full-Width Main Workspace (Tabs: Tickets List & Infrastructure Monitor) -->
+        <main class="main-workspace-full">
+            <div class="workspace-panel full-panel">
+                <div class="panel-header-tabs">
+                    <button class="tab-btn active" data-tab="tickets-tab">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+                        Fila de Chamados
+                    </button>
+                    <button class="tab-btn" data-tab="infrastructure-tab">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+                        Monitor de Infraestrutura
+                    </button>
+                </div>
+
+                <!-- Tab 1: Full-Width Tickets Table -->
+                <div class="tab-content active" id="tickets-tab">
+                    <!-- Filters Toolbar -->
+                    <div class="filter-toolbar">
+                        <div class="search-box">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                            <input type="text" id="searchInput" placeholder="Buscar por protocolo, colaborador, assunto...">
+                        </div>
+                        <div class="filter-selects">
+                            <select id="statusFilter" class="custom-select">
+                                <option value="">Todos os Status</option>
+                                <option value="OPEN">Aberto (Fila)</option>
+                                <option value="IN_PROGRESS">Em Andamento</option>
+                                <option value="RESOLVED_AUTO">Auto-Resolvido</option>
+                                <option value="RESOLVED">Resolvido</option>
+                                <option value="ESCALATED_N2">Escalado N2</option>
+                            </select>
+                            <select id="priorityFilter" class="custom-select">
+                                <option value="">Prioridades</option>
+                                <option value="P1">P1 - Crítico</option>
+                                <option value="P2">P2 - Alto</option>
+                                <option value="P3">P3 - Médio</option>
+                                <option value="P4">P4 - Baixo</option>
+                            </select>
+                            <select id="categoryFilter" class="custom-select">
+                                <option value="">Categorias</option>
+                                <option value="AUTH">Active Directory / Senha</option>
+                                <option value="NETWORK">Rede & VPN</option>
+                                <option value="DATABASE">Banco de Dados</option>
+                                <option value="ERP_CRM">ERP & CRM</option>
+                                <option value="HARDWARE">Hardware & Periféricos</option>
+                                <option value="OTHER">Outros</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Full-Width Tickets Table Container -->
+                    <div class="table-container">
+                        <table class="tickets-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 170px;">Protocolo</th>
+                                    <th style="width: 220px;">Solicitante</th>
+                                    <th style="width: 190px;">Categoria</th>
+                                    <th style="width: 140px;">Prioridade</th>
+                                    <th style="width: 160px;">Status</th>
+                                    <th style="width: 150px;">Data / Hora</th>
+                                    <th style="width: 130px; text-align: center;">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ticketsTableBody">
+                                <tr>
+                                    <td colspan="7" class="loading-td">Carregando chamados...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Tab 2: Infrastructure Health -->
+                <div class="tab-content" id="infrastructure-tab">
+                    <div class="infra-header">
+                        <div>
+                            <h3 class="panel-subtitle">Status dos Serviços Corporativos</h3>
+                            <p class="panel-subtext">Monitoramento ativo em tempo real com healthcheck e medição de latência</p>
+                        </div>
+                        <button id="runAllDiagnosticsBtn" class="action-btn">
+                            ⚡ Executar Diagnóstico Completo
+                        </button>
+                    </div>
+                    <div class="services-grid" id="servicesGridContainer">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Floating Interactive WhatsApp Bot Trigger (FAB) -->
+    <button id="floatingBotFab" class="floating-bot-fab" title="Abrir Simulador WhatsApp Bot">
+        <span class="fab-wa-icon">💬</span>
+        <span class="fab-label">Bot WhatsApp N1</span>
+        <span class="fab-pulse"></span>
+    </button>
+
+    <!-- Floating Interactive WhatsApp Bot Drawer / Widget -->
+    <div id="whatsappWidget" class="whatsapp-widget">
+        <div class="wa-header">
+            <div class="wa-avatar-wrap">
+                <div class="wa-avatar">🤖</div>
+                <span class="online-indicator"></span>
+            </div>
+            <div class="wa-chat-info">
+                <h4 class="wa-contact-name">Service Desk N1 Bot</h4>
+                <p class="wa-contact-status">online • Resposta instantânea</p>
+            </div>
+            <div class="wa-actions">
+                <button id="clearChatBtn" class="icon-btn" title="Limpar conversa">🗑️</button>
+                <button id="closeBotWidgetBtn" class="icon-btn close-widget-btn" title="Fechar">&times;</button>
+            </div>
+        </div>
+
+        <!-- Quick Preset Scenario Chips -->
+        <div class="quick-scenarios">
+            <span class="quick-label">⚡ Testar Cenários Rápidos:</span>
+            <div class="quick-tags-wrap">
+                <button class="quick-tag" data-msg="Olá, meu usuário está bloqueado no Active Directory e preciso redefinir minha senha urgente.">🔑 Reset AD</button>
+                <button class="quick-tag" data-msg="Não consigo conectar na VPN pelo FortiClient hoje de casa.">🌐 VPN FortiClient</button>
+                <button class="quick-tag" data-msg="ALERTA! Erro 500 no Banco de Dados principal e sistema travado, usuários sem acesso!">🚨 Erro 500 DB (P1)</button>
+                <button class="quick-tag" data-msg="O CRM corporativo está fora do ar ou é instabilidade minha?">📊 Status CRM</button>
+                <button class="quick-tag" data-msg="Meu segundo monitor não está ligando após atualizar o Windows.">🖥️ Monitor Quebrado</button>
+            </div>
+        </div>
+
+        <!-- WhatsApp Messages Body -->
+        <div class="wa-messages-body" id="chatMessages">
+            <div class="wa-msg-bubble incoming">
+                <div class="wa-msg-content">
+                    👋 Olá! Sou o assistente inteligente do <b>Service Desk Corporativo</b>.<br>
+                    Digite sua solicitação ou clique em um dos cenários acima para testar o autoatendimento N1.
+                </div>
+                <span class="wa-msg-time">Agora</span>
+            </div>
+        </div>
+
+        <!-- WhatsApp Input Box -->
+        <div class="wa-input-container">
+            <div class="wa-user-fields">
+                <input type="text" id="simUserName" class="wa-sub-input" placeholder="Nome" value="Carlos Eduardo">
+                <input type="text" id="simUserPhone" class="wa-sub-input" placeholder="WhatsApp" value="551199887766">
+            </div>
+            <form id="chatForm" class="wa-form">
+                <input type="text" id="chatInput" placeholder="Digite uma mensagem para o Service Desk..." autocomplete="off">
+                <button type="submit" id="sendBtn" class="wa-send-btn" title="Enviar Mensagem">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Ticket Details & Status Management Modal -->
+    <div class="modal-overlay" id="ticketModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div>
+                    <h3 class="modal-title" id="modalTicketProtocol">SD-20260824-XXXX</h3>
+                    <p class="modal-subtitle" id="modalTicketTitle">Assunto do chamado</p>
+                </div>
+                <button class="modal-close" id="closeModalBtn">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="modal-info-grid">
+                    <div class="info-item">
+                        <span class="info-label">Solicitante:</span>
+                        <span class="info-value" id="modalRequesterName">Nome</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">WhatsApp:</span>
+                        <span class="info-value font-mono" id="modalRequesterPhone">551199999999</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Categoria:</span>
+                        <span class="badge" id="modalCategoryBadge">CATEGORIA</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Prioridade:</span>
+                        <span class="badge" id="modalPriorityBadge">P3</span>
+                    </div>
+                </div>
+
+                <div class="modal-section">
+                    <h4 class="section-title">Descrição do Solicitante</h4>
+                    <div class="modal-description-box" id="modalDescription">...</div>
+                </div>
+
+                <div class="modal-section">
+                    <h4 class="section-title">Histórico de Mensagens & Logs</h4>
+                    <div class="modal-logs-list" id="modalLogsList">
+                        <!-- Message logs injected by JS -->
+                    </div>
+                </div>
+
+                <div class="modal-section status-change-section">
+                    <h4 class="section-title">Gerenciar Status & Notificação</h4>
+                    <form id="updateStatusForm" class="status-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="newStatusSelect">Novo Status:</label>
+                                <select id="newStatusSelect" class="custom-select">
+                                    <option value="OPEN">🟡 Aberto (Fila)</option>
+                                    <option value="IN_PROGRESS">🔵 Em Andamento (N2)</option>
+                                    <option value="RESOLVED">✅ Resolvido</option>
+                                    <option value="ESCALATED_N2">🚀 Escalado N2/N3</option>
+                                </select>
+                            </div>
+                            <div class="form-group checkbox-group">
+                                <label>
+                                    <input type="checkbox" id="notifyRequesterCheckbox" checked>
+                                    Notificar WhatsApp do Solicitante
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="resolutionNotesInput">Notas de Resolução / Observações:</label>
+                            <textarea id="resolutionNotesInput" rows="2" placeholder="Ex: Usuário orientado a reconectar VPN após flush de DNS..."></textarea>
+                        </div>
+                        <button type="submit" class="primary-btn">Salvar Alterações & Notificar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
