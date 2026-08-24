@@ -1,6 +1,7 @@
 """FastAPI Application Main Entry Point."""
 import os
 import logging
+import urllib.parse
 from pathlib import Path
 from contextlib import asynccontextmanager
 from starlette.types import ASGIApp, Scope, Receive, Send
@@ -33,21 +34,42 @@ class VercelPathFixMiddleware:
 
     async def __call__(self, scope: Scope, receive: Receive, send: Send):
         if scope["type"] == "http":
-            headers = dict(scope.get("headers", []))
-            # Vercel sends the true requested URI in x-matched-path or x-forwarded-uri
-            matched_path = headers.get(b"x-matched-path") or headers.get(b"x-forwarded-uri") or headers.get(b"x-original-uri")
-            if matched_path:
-                decoded = matched_path.decode("utf-8").split("?")[0]
-                scope["path"] = decoded
-            else:
-                path = scope.get("path", "")
-                for prefix in ("/api/index.py", "/api/index"):
-                    if path == prefix or path == prefix + "/":
-                        scope["path"] = "/"
-                        break
-                    elif path.startswith(prefix + "/"):
-                        scope["path"] = path[len(prefix):]
-                        break
+            real_path = None
+
+            # 1. Check for explicit query parameter __vercel_path from vercel.json rewrite
+            qs = scope.get("query_string", b"").decode("utf-8")
+            if "__vercel_path" in qs:
+                params = urllib.parse.parse_qs(qs, keep_blank_values=True)
+                if "__vercel_path" in params:
+                    extracted = params.pop("__vercel_path")[0]
+                    if extracted and extracted != "/":
+                        real_path = extracted
+                    else:
+                        real_path = "/"
+                    # Rebuild clean query string without __vercel_path
+                    new_qs = urllib.parse.urlencode([(k, v) for k, vs in params.items() for v in vs])
+                    scope["query_string"] = new_qs.encode("utf-8")
+
+            # 2. Check for Vercel internal headers
+            if not real_path:
+                headers = dict(scope.get("headers", []))
+                matched = headers.get(b"x-matched-path") or headers.get(b"x-forwarded-uri") or headers.get(b"x-original-uri")
+                if matched:
+                    decoded = matched.decode("utf-8").split("?")[0]
+                    if decoded and decoded not in ("/api/index", "/api/index.py"):
+                        real_path = decoded
+
+            # 3. Fallback for direct /api/index invocations without path info
+            if not real_path:
+                p = scope.get("path", "")
+                if p in ("/api/index.py", "/api/index"):
+                    real_path = "/"
+
+            if real_path:
+                if not real_path.startswith("/"):
+                    real_path = "/" + real_path
+                scope["path"] = real_path
+
         await self.app(scope, receive, send)
 
 
@@ -145,8 +167,6 @@ async def serve_js():
 
 
 @app.get("/", response_class=HTMLResponse, include_in_schema=False)
-@app.get("/api/index", response_class=HTMLResponse, include_in_schema=False)
-@app.get("/api/index.py", response_class=HTMLResponse, include_in_schema=False)
 async def serve_dashboard_ui(request: Request):
     """Serve the modern Service Desk Web Dashboard & WhatsApp Web Simulator."""
     html_content = get_html_content()
