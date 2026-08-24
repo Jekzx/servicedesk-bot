@@ -33,14 +33,21 @@ class VercelPathFixMiddleware:
 
     async def __call__(self, scope: Scope, receive: Receive, send: Send):
         if scope["type"] == "http":
-            path = scope.get("path", "")
-            for prefix in ("/api/index.py", "/api/index"):
-                if path == prefix or path == prefix + "/":
-                    scope["path"] = "/"
-                    break
-                elif path.startswith(prefix + "/"):
-                    scope["path"] = path[len(prefix):]
-                    break
+            headers = dict(scope.get("headers", []))
+            # Vercel sends the true requested URI in x-matched-path or x-forwarded-uri
+            matched_path = headers.get(b"x-matched-path") or headers.get(b"x-forwarded-uri") or headers.get(b"x-original-uri")
+            if matched_path:
+                decoded = matched_path.decode("utf-8").split("?")[0]
+                scope["path"] = decoded
+            else:
+                path = scope.get("path", "")
+                for prefix in ("/api/index.py", "/api/index"):
+                    if path == prefix or path == prefix + "/":
+                        scope["path"] = "/"
+                        break
+                    elif path.startswith(prefix + "/"):
+                        scope["path"] = path[len(prefix):]
+                        break
         await self.app(scope, receive, send)
 
 
