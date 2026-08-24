@@ -9,7 +9,1280 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/static/style.css">
+    <style>
+/* ==========================================================================
+   Service Desk WhatsApp Automation & Diagnostics - Titanium Obsidian Design System
+   ========================================================================== */
+
+:root {
+    /* Background Canvas & Panels (Deep Obsidian & Graphite) */
+    --bg-main: #08090C;
+    --bg-panel: rgba(15, 17, 24, 0.88);
+    --bg-card: rgba(22, 26, 38, 0.65);
+    --bg-card-hover: rgba(30, 36, 52, 0.85);
+    --bg-subtle: rgba(255, 255, 255, 0.03);
+
+    /* Borders & Accents */
+    --border-color: rgba(255, 255, 255, 0.07);
+    --border-highlight: rgba(0, 229, 255, 0.25);
+    --border-purple: rgba(168, 85, 247, 0.25);
+
+    /* Typography */
+    --text-primary: #FFFFFF;
+    --text-secondary: #94A3B8;
+    --text-muted: #64748B;
+    --text-dim: #475569;
+
+    /* Brand Accents - Electric Cyan & Cyber Violet */
+    --brand-cyan: #00E5FF;
+    --brand-cyan-glow: rgba(0, 229, 255, 0.35);
+    --brand-purple: #9333EA;
+    --brand-purple-light: #C084FC;
+    --brand-gradient: linear-gradient(135deg, #00E5FF 0%, #7000FF 100%);
+    --brand-gradient-hover: linear-gradient(135deg, #38EFFF 0%, #8B2CFF 100%);
+
+    /* WhatsApp Authentic Neon Jade */
+    --wa-green: #00F5A0;
+    --wa-green-dark: #00875A;
+    --wa-bg: #0B1014;
+    --wa-header: #182229;
+    --wa-bubble-out: #005C4B;
+    --wa-bubble-in: #1E2A30;
+    --wa-text: #E9EDEF;
+    --wa-text-muted: #8696A0;
+
+    /* Status Colors (Vibrant Neon Glow) */
+    --status-open: #FFB703;
+    --status-progress: #38BDF8;
+    --status-auto: #00F5A0;
+    --status-resolved: #10B981;
+    --status-escalated: #F43F5E;
+    --status-critical: #FF2A6D;
+
+    /* Shadows & Glows */
+    --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 16px 40px -10px rgba(0, 0, 0, 0.7), 0 0 25px rgba(0, 229, 255, 0.08);
+    --shadow-wa: 0 20px 50px -10px rgba(0, 0, 0, 0.85), 0 0 30px rgba(0, 245, 160, 0.2);
+    --shadow-fab: 0 10px 25px rgba(0, 245, 160, 0.35), 0 4px 10px rgba(0, 0, 0, 0.6);
+
+    /* Radii */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 18px;
+    --radius-full: 9999px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: var(--bg-main);
+    background-image: 
+        radial-gradient(at 0% 0%, rgba(0, 229, 255, 0.07) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(112, 0, 255, 0.08) 0px, transparent 50%),
+        radial-gradient(at 50% 100%, rgba(0, 245, 160, 0.05) 0px, transparent 50%);
+    background-attachment: fixed;
+    color: var(--text-primary);
+    min-height: 100vh;
+    line-height: 1.5;
+    overflow-x: hidden;
+}
+
+.font-mono {
+    font-family: 'JetBrains Mono', monospace;
+}
+
+/* App Container */
+.app-container {
+    max-width: 1720px;
+    margin: 0 auto;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+/* Top Navigation Bar */
+.top-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--bg-panel);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border-color);
+    padding: 0.9rem 1.75rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    flex-wrap: wrap;
+    gap: 1rem;
+    position: relative;
+}
+
+.top-nav::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 5%;
+    right: 5%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border-highlight), transparent);
+}
+
+.brand-section {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.logo-icon {
+    font-size: 1.6rem;
+    background: linear-gradient(135deg, rgba(0, 229, 255, 0.15), rgba(112, 0, 255, 0.25));
+    border: 1px solid rgba(0, 229, 255, 0.3);
+    border-radius: var(--radius-md);
+    width: 46px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.15);
+}
+
+.brand-title {
+    font-size: 1.3rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+.accent-text {
+    background: linear-gradient(135deg, #00E5FF 0%, #C084FC 50%, #FF0080 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.brand-subtitle {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.nav-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.system-status-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(0, 245, 160, 0.08);
+    border: 1px solid rgba(0, 245, 160, 0.3);
+    color: #00F5A0;
+    padding: 0.45rem 0.95rem;
+    border-radius: var(--radius-full);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+.status-pulse {
+    width: 8px;
+    height: 8px;
+    background: #00F5A0;
+    border-radius: 50%;
+    box-shadow: 0 0 0 0 rgba(0, 245, 160, 0.7);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 245, 160, 0.7); }
+    70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(0, 245, 160, 0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 245, 160, 0); }
+}
+
+.nav-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.825rem;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    border: none;
+}
+
+.bot-trigger-btn {
+    background: linear-gradient(135deg, rgba(0, 245, 160, 0.18), rgba(0, 180, 216, 0.25));
+    border: 1px solid rgba(0, 245, 160, 0.4);
+    color: #FFFFFF;
+    box-shadow: 0 0 15px rgba(0, 245, 160, 0.15);
+}
+
+.bot-trigger-btn:hover {
+    background: linear-gradient(135deg, rgba(0, 245, 160, 0.3), rgba(0, 180, 216, 0.4));
+    border-color: var(--wa-green);
+    transform: translateY(-1px);
+    box-shadow: 0 0 20px rgba(0, 245, 160, 0.3);
+}
+
+.btn-wa-icon {
+    font-size: 1.05rem;
+}
+
+.bot-badge-pill {
+    background: #00F5A0;
+    color: #052E16;
+    font-size: 0.65rem;
+    font-weight: 800;
+    padding: 0.15rem 0.45rem;
+    border-radius: var(--radius-full);
+}
+
+.api-btn {
+    background: rgba(147, 51, 234, 0.15);
+    border: 1px solid var(--border-purple);
+    color: #D8B4FE;
+}
+
+.api-btn:hover {
+    background: rgba(147, 51, 234, 0.3);
+    color: #FFFFFF;
+    border-color: #C084FC;
+}
+
+.refresh-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+}
+
+.refresh-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+}
+
+/* KPI Metrics Grid */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+}
+
+.metric-card {
+    background: var(--bg-panel);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border-color);
+    padding: 1.25rem 1.5rem;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.metric-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: transparent;
+}
+
+.card-total::before { background: var(--brand-cyan); }
+.card-auto::before { background: var(--wa-green); }
+.card-open::before { background: var(--status-open); }
+.card-critical::before { background: var(--status-critical); }
+
+.metric-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.metric-label {
+    font-size: 0.775rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.metric-value {
+    font-size: 1.75rem;
+    font-weight: 800;
+    margin-top: 0.25rem;
+    letter-spacing: -0.03em;
+}
+
+.metric-sub {
+    font-size: 0.85rem;
+    color: var(--wa-green);
+    font-weight: 700;
+}
+
+.metric-icon {
+    font-size: 1.85rem;
+    opacity: 0.9;
+}
+
+.text-red {
+    color: var(--status-critical);
+}
+
+/* Full-Width Workspace */
+.main-workspace-full {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    width: 100%;
+}
+
+.full-panel {
+    background: var(--bg-panel);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 580px;
+    box-shadow: var(--shadow-sm);
+}
+
+/* Panel Header Tabs */
+.panel-header-tabs {
+    display: flex;
+    background: rgba(11, 13, 18, 0.75);
+    border-bottom: 1px solid var(--border-color);
+    padding: 0.5rem 1.5rem 0;
+    gap: 0.75rem;
+}
+
+.tab-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    padding: 0.85rem 1.25rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+}
+
+.tab-btn:hover {
+    color: var(--text-primary);
+}
+
+.tab-btn.active {
+    color: var(--brand-cyan);
+    border-bottom-color: var(--brand-cyan);
+    text-shadow: 0 0 12px var(--brand-cyan-glow);
+}
+
+.tab-content {
+    display: none;
+    flex: 1;
+    flex-direction: column;
+    padding: 1.5rem;
+}
+
+.tab-content.active {
+    display: flex;
+}
+
+/* Filters Toolbar */
+.filter-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    margin-bottom: 1.25rem;
+}
+
+.search-box {
+    flex: 1;
+    min-width: 280px;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-box svg {
+    position: absolute;
+    left: 0.95rem;
+    color: var(--text-muted);
+}
+
+.search-box input {
+    width: 100%;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 0.65rem 0.85rem 0.65rem 2.5rem;
+    color: var(--text-primary);
+    font-size: 0.85rem;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.search-box input:focus {
+    border-color: var(--brand-cyan);
+    box-shadow: 0 0 10px var(--brand-cyan-glow);
+}
+
+.filter-selects {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+}
+
+.custom-select {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    padding: 0.65rem 0.95rem;
+    font-size: 0.825rem;
+    font-weight: 500;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.custom-select:focus {
+    border-color: var(--brand-cyan);
+    box-shadow: 0 0 10px var(--brand-cyan-glow);
+}
+
+/* Table Container & Full Width Table */
+.table-container {
+    flex: 1;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: var(--bg-card);
+}
+
+.tickets-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+    text-align: left;
+}
+
+.tickets-table th {
+    background: rgba(14, 18, 26, 0.9);
+    color: var(--text-secondary);
+    padding: 0.95rem 1.25rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.725rem;
+    letter-spacing: 0.06em;
+    border-bottom: 1px solid var(--border-color);
+    white-space: nowrap;
+}
+
+.tickets-table td {
+    padding: 0.95rem 1.25rem;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-primary);
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.tickets-table tr:hover td {
+    background: rgba(255, 255, 255, 0.025);
+}
+
+.loading-td {
+    text-align: center;
+    color: var(--text-muted);
+    padding: 3.5rem !important;
+    white-space: normal !important;
+}
+
+/* Badges & Status Pills (Strictly Single Line, Vibrant Cyber Colors) */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: var(--radius-full);
+    font-size: 0.725rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    white-space: nowrap;
+    line-height: 1.2;
+    flex-shrink: 0;
+    letter-spacing: 0.03em;
+}
+
+.badge-p1 {
+    background: rgba(255, 42, 109, 0.16);
+    border: 1px solid rgba(255, 42, 109, 0.5);
+    color: #FF2A6D;
+    animation: glow-crimson 1.5s infinite alternate;
+}
+
+@keyframes glow-crimson {
+    from { box-shadow: 0 0 4px rgba(255, 42, 109, 0.2); }
+    to { box-shadow: 0 0 14px rgba(255, 42, 109, 0.7); }
+}
+
+.badge-p2 { 
+    background: rgba(255, 140, 0, 0.16); 
+    border: 1px solid rgba(255, 140, 0, 0.5); 
+    color: #FFA500; 
+}
+
+.badge-p3 { 
+    background: rgba(0, 180, 216, 0.16); 
+    border: 1px solid rgba(0, 180, 216, 0.5); 
+    color: #00E5FF; 
+}
+
+.badge-p4 { 
+    background: rgba(0, 245, 160, 0.14); 
+    border: 1px solid rgba(0, 245, 160, 0.4); 
+    color: #00F5A0; 
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: var(--radius-full);
+    font-size: 0.75rem;
+    font-weight: 700;
+    white-space: nowrap;
+    line-height: 1.2;
+    flex-shrink: 0;
+}
+
+.status-open { 
+    background: rgba(255, 183, 3, 0.15); 
+    color: #FFB703; 
+    border: 1px solid rgba(255, 183, 3, 0.35); 
+}
+
+.status-progress { 
+    background: rgba(56, 189, 248, 0.15); 
+    color: #38BDF8; 
+    border: 1px solid rgba(56, 189, 248, 0.35); 
+}
+
+.status-resolved-auto { 
+    background: rgba(0, 245, 160, 0.18); 
+    color: #00F5A0; 
+    border: 1px solid rgba(0, 245, 160, 0.45); 
+}
+
+.status-resolved { 
+    background: rgba(16, 185, 129, 0.18); 
+    color: #34D399; 
+    border: 1px solid rgba(16, 185, 129, 0.4); 
+}
+
+.status-escalated { 
+    background: rgba(244, 63, 94, 0.16); 
+    color: #FB7185; 
+    border: 1px solid rgba(244, 63, 94, 0.4); 
+}
+
+.action-icon-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 0.4rem 0.85rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.775rem;
+    cursor: pointer;
+    font-weight: 700;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.action-icon-btn:hover {
+    background: var(--brand-gradient);
+    border-color: var(--brand-cyan);
+    color: #FFFFFF;
+    box-shadow: 0 0 12px var(--brand-cyan-glow);
+}
+
+/* Infrastructure Health Section */
+.infra-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.panel-subtitle {
+    font-size: 1.15rem;
+    font-weight: 800;
+}
+
+.panel-subtext {
+    font-size: 0.825rem;
+    color: var(--text-secondary);
+}
+
+.action-btn {
+    background: var(--brand-gradient);
+    border: none;
+    color: white;
+    padding: 0.6rem 1.15rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.1s;
+    box-shadow: 0 0 15px var(--brand-cyan-glow);
+}
+
+.action-btn:hover {
+    opacity: 0.95;
+    transform: translateY(-1px);
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.15rem;
+}
+
+.service-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    transition: border-color 0.2s, transform 0.2s;
+}
+
+.service-card:hover {
+    border-color: var(--border-highlight);
+    transform: translateY(-2px);
+}
+
+.service-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.service-name {
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+.service-desc {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    line-height: 1.45;
+}
+
+.service-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+    padding-top: 0.65rem;
+    border-top: 1px solid var(--border-color);
+    font-size: 0.775rem;
+    color: var(--text-muted);
+}
+
+.service-latency {
+    font-family: 'JetBrains Mono', monospace;
+    color: #00F5A0;
+    font-weight: 700;
+}
+
+/* ==========================================================================
+   Floating WhatsApp Bot Action Button (FAB)
+   ========================================================================== */
+
+.floating-bot-fab {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    background: linear-gradient(135deg, #00F5A0 0%, #00B4D8 100%);
+    color: #052E16;
+    border: none;
+    border-radius: var(--radius-full);
+    padding: 0.85rem 1.4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    cursor: pointer;
+    box-shadow: var(--shadow-fab);
+    z-index: 900;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.floating-bot-fab:hover {
+    transform: translateY(-3px) scale(1.04);
+    box-shadow: 0 16px 35px rgba(0, 245, 160, 0.5), 0 6px 16px rgba(0,0,0,0.6);
+}
+
+.fab-wa-icon {
+    font-size: 1.35rem;
+}
+
+.fab-label {
+    font-weight: 800;
+    font-size: 0.9rem;
+    letter-spacing: -0.01em;
+}
+
+.fab-pulse {
+    width: 9px;
+    height: 9px;
+    background: #052E16;
+    border-radius: 50%;
+    animation: pulse-dark 1.8s infinite;
+}
+
+@keyframes pulse-dark {
+    0% { transform: scale(0.9); opacity: 1; }
+    50% { transform: scale(1.4); opacity: 0.4; }
+    100% { transform: scale(0.9); opacity: 1; }
+}
+
+/* ==========================================================================
+   Floating WhatsApp Bot Drawer / Widget
+   ========================================================================== */
+
+.whatsapp-widget {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    width: 440px;
+    height: 630px;
+    max-width: calc(100vw - 32px);
+    max-height: calc(100vh - 56px);
+    background: var(--wa-bg);
+    border: 1px solid rgba(0, 245, 160, 0.35);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-wa);
+    z-index: 950;
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    animation: slideUpWidget 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.whatsapp-widget.open {
+    display: flex;
+}
+
+@keyframes slideUpWidget {
+    from { transform: translateY(40px) scale(0.95); opacity: 0; }
+    to { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+.wa-header {
+    background: var(--wa-header);
+    padding: 0.85rem 1.15rem;
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.wa-avatar-wrap {
+    position: relative;
+}
+
+.wa-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #00F5A0, #00B4D8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+}
+
+.online-indicator {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 10px;
+    height: 10px;
+    background: #00F5A0;
+    border: 2px solid var(--wa-header);
+    border-radius: 50%;
+}
+
+.wa-chat-info {
+    flex: 1;
+}
+
+.wa-contact-name {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--wa-text);
+}
+
+.wa-contact-status {
+    font-size: 0.75rem;
+    color: #00F5A0;
+    font-weight: 500;
+}
+
+.wa-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.icon-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1.15rem;
+    opacity: 0.75;
+    transition: opacity 0.2s;
+    color: var(--wa-text);
+    padding: 0.25rem 0.45rem;
+    border-radius: var(--radius-sm);
+}
+
+.icon-btn:hover {
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.close-widget-btn {
+    font-size: 1.45rem;
+    line-height: 1;
+}
+
+/* Quick Preset Scenario Chips */
+.quick-scenarios {
+    background: rgba(17, 27, 33, 0.95);
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+
+.quick-label {
+    font-size: 0.725rem;
+    color: var(--text-muted);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.quick-tags-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.quick-tag {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #A5B4FC;
+    padding: 0.3rem 0.65rem;
+    border-radius: var(--radius-full);
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.quick-tag:hover {
+    background: rgba(0, 229, 255, 0.2);
+    border-color: var(--brand-cyan);
+    color: #FFFFFF;
+    transform: translateY(-1px);
+}
+
+/* WhatsApp Messages Body */
+.wa-messages-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem 1.15rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    min-height: 240px;
+    background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 0);
+    background-size: 24px 24px;
+}
+
+.wa-msg-bubble {
+    max-width: 85%;
+    padding: 0.75rem 0.95rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    position: relative;
+    line-height: 1.45;
+    word-break: break-word;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.35);
+}
+
+.wa-msg-bubble.incoming {
+    align-self: flex-start;
+    background: var(--wa-bubble-in);
+    color: var(--wa-text);
+    border-top-left-radius: 2px;
+}
+
+.wa-msg-bubble.outgoing {
+    align-self: flex-end;
+    background: var(--wa-bubble-out);
+    color: var(--wa-text);
+    border-top-right-radius: 2px;
+}
+
+.wa-msg-time {
+    display: block;
+    font-size: 0.675rem;
+    color: var(--wa-text-muted);
+    text-align: right;
+    margin-top: 0.3rem;
+}
+
+/* WhatsApp Input Area */
+.wa-input-container {
+    background: var(--wa-header);
+    padding: 0.75rem 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+}
+
+.wa-user-fields {
+    display: flex;
+    gap: 0.55rem;
+}
+
+.wa-sub-input {
+    flex: 1;
+    background: rgba(11, 16, 20, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-sm);
+    color: var(--wa-text);
+    padding: 0.4rem 0.75rem;
+    font-size: 0.775rem;
+    outline: none;
+}
+
+.wa-form {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+}
+
+.wa-form input {
+    flex: 1;
+    background: rgba(11, 16, 20, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-md);
+    color: var(--wa-text);
+    padding: 0.7rem 0.95rem;
+    font-size: 0.875rem;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.wa-form input:focus {
+    border-color: #00F5A0;
+    box-shadow: 0 0 10px rgba(0, 245, 160, 0.25);
+}
+
+.wa-send-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #00F5A0, #00B4D8);
+    border: none;
+    color: #052E16;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.2s;
+}
+
+.wa-send-btn:hover {
+    transform: scale(1.08);
+    box-shadow: 0 0 15px rgba(0, 245, 160, 0.4);
+}
+
+/* Modal Window */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    padding: 1rem;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-highlight);
+    border-radius: var(--radius-lg);
+    width: 100%;
+    max-width: 680px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.35rem 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.modal-title {
+    font-size: 1.25rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+.modal-subtitle {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.modal-close {
+    background: transparent;
+    border: none;
+    font-size: 1.85rem;
+    color: var(--text-muted);
+    cursor: pointer;
+}
+
+.modal-close:hover {
+    color: var(--text-primary);
+}
+
+.modal-body {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.modal-info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.85rem;
+    background: var(--bg-card);
+    padding: 1rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+}
+
+.info-label {
+    color: var(--text-secondary);
+}
+
+.info-value {
+    font-weight: 700;
+}
+
+.modal-description-box {
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid var(--border-color);
+    padding: 0.85rem 1rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    color: var(--text-primary);
+    line-height: 1.5;
+}
+
+.modal-logs-list {
+    max-height: 200px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+}
+
+.log-item {
+    background: var(--bg-card);
+    padding: 0.6rem 0.85rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.8rem;
+    border-left: 3px solid var(--brand-cyan);
+}
+
+.log-item.outbound {
+    border-left-color: var(--wa-green);
+}
+
+.log-header {
+    display: flex;
+    justify-content: space-between;
+    color: var(--text-muted);
+    font-size: 0.725rem;
+    margin-bottom: 0.25rem;
+}
+
+.status-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    background: var(--bg-card);
+    padding: 1.15rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+}
+
+.form-row {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.form-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.form-group label {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    font-weight: 700;
+}
+
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    color: var(--text-primary);
+    font-size: 0.825rem;
+}
+
+.status-form textarea {
+    background: var(--bg-main);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    padding: 0.6rem 0.85rem;
+    font-family: inherit;
+    font-size: 0.85rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.status-form textarea:focus {
+    border-color: var(--brand-cyan);
+}
+
+.primary-btn {
+    background: var(--brand-gradient);
+    border: none;
+    color: white;
+    padding: 0.75rem 1.25rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.1s;
+    box-shadow: 0 0 15px var(--brand-cyan-glow);
+}
+
+.primary-btn:hover {
+    opacity: 0.95;
+    transform: translateY(-1px);
+}
+
+/* Toast Notifications */
+.toast-container {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    z-index: 1000;
+}
+
+.toast {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-highlight);
+    color: var(--text-primary);
+    padding: 0.85rem 1.35rem;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    font-size: 0.85rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+</style>
 </head>
 <body>
     <div class="app-container">
@@ -310,6 +1583,508 @@
     <!-- Toast Notification Container -->
     <div id="toastContainer" class="toast-container"></div>
 
-    <script src="/static/app.js"></script>
+    <script>
+/**
+ * Service Desk WhatsApp Automation & Diagnostics - Interactive Frontend
+ */
+
+let currentSelectedTicketId = null;
+
+// Initialize on DOM ready
+document.addEventListener("DOMContentLoaded", () => {
+    initTabs();
+    initFilters();
+    initChatSimulator();
+    initModal();
+    initFloatingBotWidget();
+    
+    // Initial data load
+    loadDashboardData();
+    loadServicesHealth();
+
+    // Auto-refresh periodically every 30 seconds
+    setInterval(() => {
+        loadDashboardData(false);
+        loadServicesHealth(false);
+    }, 30000);
+
+    document.getElementById("refreshDataBtn").addEventListener("click", () => {
+        loadDashboardData(true);
+        loadServicesHealth(true);
+        showToast("Dados atualizados com sucesso!");
+    });
+
+    document.getElementById("runAllDiagnosticsBtn").addEventListener("click", () => {
+        runFullDiagnostics();
+    });
+});
+
+// ==========================================
+// 1. TABS MANAGEMENT
+// ==========================================
+function initTabs() {
+    const tabBtns = document.querySelectorAll(".tab-btn");
+    tabBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+            tabBtns.forEach(b => b.classList.remove("active"));
+            document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
+            
+            btn.classList.add("active");
+            const targetId = btn.getAttribute("data-tab");
+            document.getElementById(targetId).classList.add("active");
+        });
+    });
+}
+
+// ==========================================
+// 2. DASHBOARD DATA & TICKETS TABLE
+// ==========================================
+async function loadDashboardData(showFeedback = false) {
+    try {
+        // Fetch stats
+        const statsRes = await fetch("/api/dashboard/stats");
+        if (statsRes.ok) {
+            const stats = await statsRes.json();
+            renderKPIs(stats);
+        }
+
+        // Fetch tickets with current filters
+        await fetchAndRenderTickets();
+
+    } catch (err) {
+        console.error("Error loading dashboard data:", err);
+    }
+}
+
+function renderKPIs(stats) {
+    document.getElementById("kpiTotalTickets").textContent = stats.total_tickets || 0;
+    document.getElementById("kpiAutoResolved").innerHTML = `${stats.resolved_auto_tickets || 0} <span class="metric-sub">(${stats.auto_remediation_rate || 0}%)</span>`;
+    document.getElementById("kpiOpenTickets").textContent = stats.open_tickets || 0;
+    document.getElementById("kpiCriticalP1").textContent = stats.critical_p1_tickets || 0;
+}
+
+async function fetchAndRenderTickets() {
+    const search = document.getElementById("searchInput").value.trim();
+    const status = document.getElementById("statusFilter").value;
+    const priority = document.getElementById("priorityFilter").value;
+    const category = document.getElementById("categoryFilter").value;
+
+    const params = new URLSearchParams();
+    if (search) params.append("search", search);
+    if (status) params.append("status", status);
+    if (priority) params.append("priority", priority);
+    if (category) params.append("category", category);
+    params.append("page", "1");
+    params.append("page_size", "50");
+
+    const tbody = document.getElementById("ticketsTableBody");
+
+    try {
+        const res = await fetch(`/api/tickets?${params.toString()}`);
+        if (!res.ok) throw new Error("Failed to fetch tickets");
+        const data = await res.json();
+        
+        if (!data.items || data.items.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="7" class="loading-td">Nenhum chamado encontrado com os filtros selecionados.</td></tr>`;
+            return;
+        }
+
+        tbody.innerHTML = data.items.map(ticket => `
+            <tr>
+                <td><strong class="font-mono text-primary">${ticket.protocol}</strong></td>
+                <td>
+                    <div style="font-weight:600;">${ticket.requester_name}</div>
+                    <div style="font-size:0.725rem; color:var(--text-muted);">${ticket.requester_phone}</div>
+                </td>
+                <td><span class="badge" style="background:rgba(255,255,255,0.06);">${formatCategory(ticket.category)}</span></td>
+                <td>${getPriorityBadge(ticket.priority)}</td>
+                <td>${getStatusBadge(ticket.status)}</td>
+                <td style="font-size:0.75rem; color:var(--text-secondary);">${formatDate(ticket.created_at)}</td>
+                <td style="text-align: center;">
+                    <button class="action-icon-btn" onclick="openTicketModal('${ticket.id}')">
+                        Ver & Gerenciar
+                    </button>
+                </td>
+            </tr>
+        `).join("");
+
+    } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="7" class="loading-td text-red">Erro ao carregar chamados.</td></tr>`;
+    }
+}
+
+function initFilters() {
+    const inputs = ["searchInput", "statusFilter", "priorityFilter", "categoryFilter"];
+    inputs.forEach(id => {
+        document.getElementById(id).addEventListener("input", () => {
+            fetchAndRenderTickets();
+        });
+    });
+}
+
+function getPriorityBadge(priority) {
+    const map = {
+        "P1": `<span class="badge badge-p1">🚨 P1 - Crítico</span>`,
+        "P2": `<span class="badge badge-p2">⚠️ P2 - Alto</span>`,
+        "P3": `<span class="badge badge-p3">🟡 P3 - Médio</span>`,
+        "P4": `<span class="badge badge-p4">🟢 P4 - Baixo</span>`
+    };
+    return map[priority] || `<span class="badge">${priority}</span>`;
+}
+
+function getStatusBadge(status) {
+    const map = {
+        "OPEN": `<span class="status-badge status-open">🟡 Aberto</span>`,
+        "IN_PROGRESS": `<span class="status-badge status-progress">🔵 Em Andamento</span>`,
+        "RESOLVED_AUTO": `<span class="status-badge status-resolved-auto">⚡ Auto-Resolvido</span>`,
+        "RESOLVED": `<span class="status-badge status-resolved">✅ Resolvido</span>`,
+        "ESCALATED_N2": `<span class="status-badge status-escalated">🚀 Escalado N2</span>`
+    };
+    return map[status] || `<span class="status-badge">${status}</span>`;
+}
+
+function formatCategory(cat) {
+    const map = {
+        "AUTH": "Active Directory / Senha",
+        "NETWORK": "Rede & VPN",
+        "DATABASE": "Banco de Dados",
+        "ERP_CRM": "ERP & CRM",
+        "HARDWARE": "Hardware",
+        "OTHER": "Geral"
+    };
+    return map[cat] || cat;
+}
+
+function formatDate(isoStr) {
+    if (!isoStr) return "-";
+    const d = new Date(isoStr);
+    return d.toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" });
+}
+
+// ==========================================
+// 3. INFRASTRUCTURE HEALTH MONITOR
+// ==========================================
+async function loadServicesHealth(showNotification = false) {
+    const container = document.getElementById("servicesGridContainer");
+    try {
+        const res = await fetch("/api/health/services");
+        if (!res.ok) return;
+        const data = await res.json();
+
+        // Update top global status
+        const globalStatusBadge = document.getElementById("systemGlobalStatus");
+        const globalStatusText = document.getElementById("systemStatusText");
+        if (data.outage_count > 0) {
+            globalStatusBadge.style.borderColor = "rgba(239, 68, 68, 0.4)";
+            globalStatusBadge.style.color = "#F87171";
+            globalStatusText.textContent = `${data.outage_count} Serviço(s) com Incidente`;
+        } else {
+            globalStatusBadge.style.borderColor = "rgba(16, 185, 129, 0.3)";
+            globalStatusBadge.style.color = "#34D399";
+            globalStatusText.textContent = "Sistemas 100% Operacionais";
+        }
+
+        container.innerHTML = data.services.map(s => {
+            const isOp = s.status === "OPERATIONAL";
+            const statusClass = isOp ? "status-resolved-auto" : "badge-p1";
+            const statusLabel = isOp ? "🟢 Operacional" : "🔴 Fora do Ar";
+            return `
+                <div class="service-card">
+                    <div class="service-top">
+                        <span class="service-name">${s.name}</span>
+                        <span class="status-badge ${statusClass}">${statusLabel}</span>
+                    </div>
+                    <p class="service-desc">${s.description || s.endpoint_url}</p>
+                    <div class="service-meta">
+                        <span>Latência: <strong class="service-latency">${s.latency_ms} ms</strong></span>
+                        <button class="action-icon-btn" onclick="testSingleService('${s.service_key}')">Testar</button>
+                    </div>
+                </div>
+            `;
+        }).join("");
+
+    } catch (err) {
+        console.error("Error loading services health:", err);
+    }
+}
+
+async function testSingleService(serviceKey) {
+    try {
+        showToast(`Testando ${serviceKey.toUpperCase()}...`);
+        const res = await fetch("/api/health/diagnostics", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ target: serviceKey })
+        });
+        if (res.ok) {
+            const data = await res.json();
+            showToast(`${data.target.toUpperCase()}: ${data.message}`);
+            loadServicesHealth();
+        }
+    } catch (e) {
+        showToast("Erro ao testar serviço.", "error");
+    }
+}
+
+async function runFullDiagnostics() {
+    showToast("Executando diagnóstico completo de infraestrutura...");
+    await loadServicesHealth();
+    showToast("Diagnóstico finalizado!");
+}
+
+// ==========================================
+// 4. FLOATING BOT WIDGET INTERACTION
+// ==========================================
+function initFloatingBotWidget() {
+    const fab = document.getElementById("floatingBotFab");
+    const widget = document.getElementById("whatsappWidget");
+    const closeBtn = document.getElementById("closeBotWidgetBtn");
+    const navBtn = document.getElementById("openBotNavBtn");
+
+    function openWidget() {
+        widget.classList.add("open");
+        const chatInput = document.getElementById("chatInput");
+        setTimeout(() => chatInput.focus(), 200);
+    }
+
+    function closeWidget() {
+        widget.classList.remove("open");
+    }
+
+    function toggleWidget() {
+        if (widget.classList.contains("open")) {
+            closeWidget();
+        } else {
+            openWidget();
+        }
+    }
+
+    if (fab) fab.addEventListener("click", toggleWidget);
+    if (navBtn) navBtn.addEventListener("click", openWidget);
+    if (closeBtn) closeBtn.addEventListener("click", closeWidget);
+}
+
+// ==========================================
+// 5. WHATSAPP WEB SIMULATOR
+// ==========================================
+function initChatSimulator() {
+    const chatForm = document.getElementById("chatForm");
+    const chatInput = document.getElementById("chatInput");
+    const clearBtn = document.getElementById("clearChatBtn");
+
+    chatForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const text = chatInput.value.trim();
+        if (!text) return;
+
+        const name = document.getElementById("simUserName").value.trim() || "Colaborador";
+        const phone = document.getElementById("simUserPhone").value.trim() || "551199887766";
+
+        appendMessage(text, "outgoing", name);
+        chatInput.value = "";
+
+        // Show typing indicator
+        const typingId = showTypingIndicator();
+
+        try {
+            const payload = {
+                phone: phone,
+                name: name,
+                message: text,
+                message_type: "text"
+            };
+
+            const res = await fetch("/api/webhook", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+
+            removeTypingIndicator(typingId);
+
+            if (res.ok) {
+                const data = await res.json();
+                appendMessage(data.reply_message, "incoming", "Bot N1 Service Desk");
+                // Refresh full tickets table & KPIs in background
+                loadDashboardData();
+            } else {
+                appendMessage("❌ Erro ao comunicar com a API do Service Desk.", "incoming");
+            }
+        } catch (err) {
+            removeTypingIndicator(typingId);
+            appendMessage("❌ Falha de rede ao enviar mensagem.", "incoming");
+        }
+    });
+
+    // Preset chips
+    document.querySelectorAll(".quick-tag").forEach(tag => {
+        tag.addEventListener("click", () => {
+            const msg = tag.getAttribute("data-msg");
+            chatInput.value = msg;
+            chatForm.dispatchEvent(new Event("submit"));
+        });
+    });
+
+    clearBtn.addEventListener("click", () => {
+        document.getElementById("chatMessages").innerHTML = `
+            <div class="wa-msg-bubble incoming">
+                <div class="wa-msg-content">
+                    👋 Chat limpo. Digite uma nova mensagem para iniciar atendimento.
+                </div>
+                <span class="wa-msg-time">Agora</span>
+            </div>
+        `;
+    });
+}
+
+function appendMessage(text, direction, sender = "") {
+    const chatContainer = document.getElementById("chatMessages");
+    const bubble = document.createElement("div");
+    bubble.className = `wa-msg-bubble ${direction}`;
+
+    const timeStr = new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+    
+    // Format bold, markdown and code in message
+    let formattedText = text
+        .replace(/\n/g, "<br>")
+        .replace(/\*(.*?)\*/g, "<b>$1</b>")
+        .replace(/`(.*?)`/g, "<code style='background:rgba(0,0,0,0.3);padding:2px 4px;border-radius:3px;'>$1</code>")
+        .replace(/_(.*?)_/g, "<i>$1</i>");
+
+    bubble.innerHTML = `
+        <div class="wa-msg-content">${formattedText}</div>
+        <span class="wa-msg-time">${timeStr}</span>
+    `;
+
+    chatContainer.appendChild(bubble);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+}
+
+function showTypingIndicator() {
+    const chatContainer = document.getElementById("chatMessages");
+    const id = "typing-" + Date.now();
+    const bubble = document.createElement("div");
+    bubble.id = id;
+    bubble.className = "wa-msg-bubble incoming";
+    bubble.innerHTML = `<span style="font-style:italic;color:var(--wa-text-muted);">digitando...</span>`;
+    chatContainer.appendChild(bubble);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+    return id;
+}
+
+function removeTypingIndicator(id) {
+    const el = document.getElementById(id);
+    if (el) el.remove();
+}
+
+// ==========================================
+// 6. TICKET DETAILS MODAL & STATUS UPDATE
+// ==========================================
+function initModal() {
+    const modal = document.getElementById("ticketModal");
+    const closeBtn = document.getElementById("closeModalBtn");
+    const statusForm = document.getElementById("updateStatusForm");
+
+    closeBtn.addEventListener("click", () => {
+        modal.classList.remove("active");
+    });
+
+    modal.addEventListener("click", (e) => {
+        if (e.target === modal) modal.classList.remove("active");
+    });
+
+    statusForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        if (!currentSelectedTicketId) return;
+
+        const newStatus = document.getElementById("newStatusSelect").value;
+        const notify = document.getElementById("notifyRequesterCheckbox").checked;
+        const notes = document.getElementById("resolutionNotesInput").value.trim();
+
+        try {
+            const res = await fetch(`/api/tickets/${currentSelectedTicketId}/status`, {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    status: newStatus,
+                    resolution_notes: notes || null,
+                    notify_requester: notify
+                })
+            });
+
+            if (res.ok) {
+                showToast("Status do chamado atualizado com sucesso!");
+                modal.classList.remove("active");
+                loadDashboardData();
+            } else {
+                showToast("Erro ao atualizar chamado.", "error");
+            }
+        } catch (err) {
+            showToast("Erro de conexão.", "error");
+        }
+    });
+}
+
+async function openTicketModal(ticketId) {
+    currentSelectedTicketId = ticketId;
+    const modal = document.getElementById("ticketModal");
+
+    try {
+        const res = await fetch(`/api/tickets/${ticketId}`);
+        if (!res.ok) throw new Error("Ticket not found");
+        const ticket = await res.json();
+
+        document.getElementById("modalTicketProtocol").textContent = ticket.protocol;
+        document.getElementById("modalTicketTitle").textContent = ticket.title;
+        document.getElementById("modalRequesterName").textContent = ticket.requester_name;
+        document.getElementById("modalRequesterPhone").textContent = ticket.requester_phone;
+        document.getElementById("modalDescription").textContent = ticket.description;
+        document.getElementById("newStatusSelect").value = ticket.status;
+        document.getElementById("resolutionNotesInput").value = ticket.resolution_notes || "";
+
+        // Badges
+        document.getElementById("modalCategoryBadge").textContent = formatCategory(ticket.category);
+        document.getElementById("modalPriorityBadge").innerHTML = getPriorityBadge(ticket.priority);
+
+        // Logs
+        const logsList = document.getElementById("modalLogsList");
+        if (ticket.messages && ticket.messages.length > 0) {
+            logsList.innerHTML = ticket.messages.map(m => `
+                <div class="log-item ${m.direction.toLowerCase()}">
+                    <div class="log-header">
+                        <strong>${m.sender_name || m.sender_phone} (${m.direction})</strong>
+                        <span>${formatDate(m.timestamp)}</span>
+                    </div>
+                    <div>${m.content || "[Mídia/Payload]"}</div>
+                </div>
+            `).join("");
+        } else {
+            logsList.innerHTML = `<div style="color:var(--text-muted);font-size:0.8rem;">Nenhuma mensagem registrada para este chamado.</div>`;
+        }
+
+        modal.classList.add("active");
+
+    } catch (err) {
+        showToast("Falha ao abrir detalhes do chamado.", "error");
+    }
+}
+
+// ==========================================
+// 7. TOAST NOTIFICATIONS
+// ==========================================
+function showToast(message, type = "info") {
+    const container = document.getElementById("toastContainer");
+    const toast = document.createElement("div");
+    toast.className = "toast";
+    toast.innerHTML = `<span>${type === "error" ? "❌" : "🔔"}</span> <span>${message}</span>`;
+    container.appendChild(toast);
+
+    setTimeout(() => {
+        toast.style.opacity = "0";
+        setTimeout(() => toast.remove(), 300);
+    }, 3500);
+}
+
+</script>
 </body>
 </html>
