@@ -13,6 +13,7 @@ from app.core.database import init_db, SessionLocal
 from app.models.ticket import Ticket
 from app.services.auto_fix import auto_fix_service
 from app.routers import webhook_router, tickets_router, health_router, dashboard_router
+from app.embedded_assets import get_html_content, get_css_content, get_js_content
 
 # Setup Logging
 logging.basicConfig(
@@ -21,22 +22,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger("servicedesk-bot")
 
-# Resolve paths robustly across local and Vercel/Lambda environments
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-
-def find_file_in_candidate_paths(relative_path: str) -> Path | None:
-    """Find a file across multiple candidate directories in serverless environments."""
-    candidates = [
-        BASE_DIR / relative_path,
-        Path.cwd() / relative_path,
-        Path("/var/task") / relative_path,
-        Path(__file__).resolve().parent / relative_path,
-    ]
-    for c in candidates:
-        if c.exists() and c.is_file():
-            return c
-    return None
 
 
 def ensure_initial_seed(db):
@@ -50,7 +36,7 @@ def ensure_initial_seed(db):
         logger.warning(f"Initial seed warning (non-fatal): {e}")
 
 
-# Run initial DB setup eagerly for serverless environments where lifespan might not trigger
+# Run initial DB setup eagerly for serverless environments
 try:
     init_db()
     _init_db_session = SessionLocal()
@@ -118,28 +104,19 @@ if static_dir.exists():
         logger.warning(f"StaticFiles mount warning: {e}")
 
 
-# Explicit routes for static assets as serverless safety fallback
+# Explicit routes for static assets and HTML
 @app.get("/static/style.css", include_in_schema=False)
 async def serve_css():
-    file_path = find_file_in_candidate_paths("static/style.css")
-    if file_path:
-        return Response(content=file_path.read_text(encoding="utf-8"), media_type="text/css")
-    return Response(content="/* CSS fallback */", media_type="text/css")
+    return Response(content=get_css_content(), media_type="text/css")
 
 
 @app.get("/static/app.js", include_in_schema=False)
 async def serve_js():
-    file_path = find_file_in_candidate_paths("static/app.js")
-    if file_path:
-        return Response(content=file_path.read_text(encoding="utf-8"), media_type="application/javascript")
-    return Response(content="// JS fallback", media_type="application/javascript")
+    return Response(content=get_js_content(), media_type="application/javascript")
 
 
 @app.get("/", response_class=HTMLResponse, include_in_schema=False)
 async def serve_dashboard_ui(request: Request):
     """Serve the modern Service Desk Web Dashboard & WhatsApp Web Simulator."""
-    file_path = find_file_in_candidate_paths("templates/index.html")
-    if file_path:
-        content = file_path.read_text(encoding="utf-8")
-        return HTMLResponse(content=content)
-    return HTMLResponse("<h1>Service Desk Bot API is running! Access <a href='/docs'>/docs</a> for Swagger UI.</h1>")
+    html_content = get_html_content()
+    return HTMLResponse(content=html_content)
