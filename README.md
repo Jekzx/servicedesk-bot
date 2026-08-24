@@ -1,6 +1,9 @@
 # 🤖 Service Desk WhatsApp Automation & Diagnostics Bot
 
 <p align="center">
+  <a href="https://servicedesk-bot-w8kr.vercel.app" target="_blank">
+    <img src="https://img.shields.io/badge/Live%20Demo-servicedesk--bot--w8kr.vercel.app-00E5FF?style=for-the-badge&logo=vercel&logoColor=white" alt="Live Demo Vercel" />
+  </a>
   <img src="https://img.shields.io/badge/Python-3.12-blue?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.12" />
   <img src="https://img.shields.io/badge/FastAPI-0.110+-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI" />
   <img src="https://img.shields.io/badge/SQLAlchemy-2.0-red?style=for-the-badge&logo=sqlalchemy&logoColor=white" alt="SQLAlchemy" />
@@ -11,13 +14,24 @@
 
 ---
 
+## 🌐 Live Preview & Demonstração Online
+
+A aplicação está disponível e rodando em produção na Vercel:
+
+🔗 **[https://servicedesk-bot-w8kr.vercel.app](https://servicedesk-bot-w8kr.vercel.app)**
+
+* 🖥️ **Painel de Chamados & Bot Flutuante**: [servicedesk-bot-w8kr.vercel.app](https://servicedesk-bot-w8kr.vercel.app)
+* 📑 **Swagger API Docs (OpenAPI)**: [servicedesk-bot-w8kr.vercel.app/docs](https://servicedesk-bot-w8kr.vercel.app/docs)
+
+---
+
 ## 📖 Visão Geral
 
 O **Service Desk WhatsApp Automation & Diagnostics Bot** é uma solução corporativa completa de **Autoatendimento N1**, **Triagem Inteligente de Chamados** e **Diagnóstico Ativo de Infraestrutura** integrada ao **WhatsApp** (Meta Cloud API & Webhook Mock).
 
 A aplicação analisa as mensagens enviadas pelos colaboradores, identifica a categoria do incidente (**Active Directory/Senha**, **VPN/Rede**, **Incidentes Críticos P1**, **ERP/CRM**, **Hardware**), realiza checagens ativas de saúde de servidores em tempo real, executa **auto-remediação N1** sem intervenção humana e gera protocolos únicos com persistência relacional e controle de SLA.
 
-Além da API RESTful e documentação Swagger, o projeto acompanha um **Dashboard Web integrado** com **Simulador do WhatsApp Web em tempo real** e um **CLI interativo no terminal** para testes sem necessidade de credenciais pagas da Meta.
+Além da API RESTful e documentação Swagger, o projeto acompanha um **Dashboard Web integrado** em tela cheia com paleta moderna **Titanium Obsidian & Neon Cyber**, **Simulador do WhatsApp Web em tempo real** e um **CLI interativo no terminal** para testes sem necessidade de credenciais pagas da Meta.
 
 ---
 
@@ -61,7 +75,7 @@ flowchart TD
   * **Incidentes Críticos P1**: Identificação de termos de alta severidade (*"banco fora"*, *"erro 500"*, *"produção parada"*), escalando imediatamente para o time N2/DevOps com protocolo de emergência.
   * **Sistemas Corporativos**: Consulta de disponibilidade em tempo real de CRM, ERP SAP, VPN Gateway e Cluster de Banco de Dados.
 * **🛠️ Diagnóstico & Auto-Remediação N1 (`auto_fix.py`)**: Healthchecks assíncronos que respondem ao usuário se o sistema está operante ou em janela de manutenção antes da abertura de tickets manuais.
-* **📊 Painel Web & Simulador WhatsApp Web**: Interface visual moderna Dark Mode com estatísticas SLA, gestão de chamados em tempo real e simulador de conversas interativo.
+* **📊 Painel Web & Simulador WhatsApp Web**: Interface visual moderna Dark Mode com estatísticas SLA, gestão de chamados em tela cheia e widget flutuante do WhatsApp Web.
 * **💻 CLI Interativo de Terminal (`scripts/simulate_whatsapp.py`)**: Menu interativo com cenários pré-configurados para testes rápidos de ponta a ponta.
 * **🧪 Testes Automatizados com Pytest**: Cobertura completa de testes unitários e de integração para webhooks, motor de triagem, CRUD de tickets e diagnósticos.
 
@@ -71,6 +85,8 @@ flowchart TD
 
 ```plaintext
 servicedesk-bot/
+├── api/
+│   └── index.py                  # Ponto de entrada Serverless da Vercel
 ├── app/
 │   ├── core/
 │   │   ├── config.py             # Configurações Pydantic Settings e .env
@@ -94,78 +110,86 @@ servicedesk-bot/
 │   │   ├── health.py             # Healthcheck e diagnóstico sob demanda
 │   │   └── dashboard.py          # Métricas analíticas e estatísticas em tempo real
 │   ├── static/
-│   │   ├── style.css             # Estilos modernos Dark Mode com Glassmorphism
-│   │   └── app.js                # Lógica frontend do Dashboard e Simulador WhatsApp
+│   │   ├── style.css             # Design System Titanium Obsidian & Neon Cyber
+│   │   └── app.js                # Lógica frontend do Dashboard e Bot WhatsApp
 │   ├── templates/
 │   │   └── index.html            # Interface Web integrada
-│   └── main.py                   # Ponto de entrada FastAPI com Swagger OpenAPI
+│   ├── embedded_assets.py        # Assets embarcados para runtime serverless
+│   └── main.py                   # Ponto de entrada FastAPI e middlewares
 ├── scripts/
-│   ├── simulate_whatsapp.py      # CLI interativo para testes no terminal
-│   └── seed_data.py              # Script para popular tickets e serviços de demonstração
+│   ├── simulate_whatsapp.py      # CLI interativo no terminal
+│   ├── seed_data.py              # Povoamento inicial de banco de dados
+│   └── build_embedded_assets.py  # Script de build para empacotamento de assets
 ├── tests/
-│   ├── conftest.py               # Fixtures Pytest com SQLite isolado em memória
-│   ├── test_webhook.py           # Testes de recepção e validação do webhook
-│   ├── test_triage.py            # Testes do motor de classificação e priorização P1-P4
-│   ├── test_tickets.py           # Testes de CRUD e atualização de status
-│   └── test_health.py            # Testes de endpoints de diagnóstico e saúde
-├── Dockerfile                    # Containerização para produção
+│   ├── conftest.py               # Fixtures do Pytest e banco SQLite in-memory
+│   ├── test_webhook.py           # Testes do webhook da Meta Cloud API
+│   ├── test_triage.py            # Testes do motor de triagem e regras de negócio
+│   ├── test_tickets.py           # Testes do CRUD e filtros de tickets
+│   └── test_health.py            # Testes dos endpoints de monitoramento de saúde
+├── main.py                       # Entrypoint na raiz para preset FastAPI da Vercel
+├── vercel.json                   # Configuração de rewrites serverless da Vercel
+├── Dockerfile                    # Dockerfile multi-stage otimizado
 ├── docker-compose.yml            # Orquestração FastAPI + PostgreSQL 16
 ├── requirements.txt              # Dependências do projeto
-├── pytest.ini                    # Configuração de execução dos testes
-├── .env.example                  # Template de variáveis de ambiente
-└── README.md                     # Documentação completa do repositório
+└── README.md                     # Documentação completa
 ```
 
 ---
 
-## 🚀 Como Executar o Projeto
+## 🚀 Como Executar Localmente
 
-### 1. Pré-requisitos
-* **Python 3.12+** instalado
-* **Docker & Docker Compose** (opcional, para rodar com PostgreSQL)
+### 1. Clonar o Repositório e Criar Ambiente Virtual
 
-### 2. Clonando o Repositório e Configurando o Ambiente
 ```bash
-# Clone o repositório
-git clone https://github.com/SEU_USUARIO/servicedesk-bot.git
+git clone https://github.com/Jekzx/servicedesk-bot.git
 cd servicedesk-bot
 
-# Crie e ative um ambiente virtual
+# Criar ambiente virtual
 python -m venv venv
+
+# Ativar ambiente virtual
 # No Windows:
-venv\Scripts\activate
-# No Linux/Mac:
+.\venv\Scripts\activate
+# No Linux/macOS:
 source venv/bin/activate
 
-# Instale as dependências
+# Instalar dependências
 pip install -r requirements.txt
+```
 
-# Configure as variáveis de ambiente
+### 2. Configurar Variáveis de Ambiente
+
+Copie o arquivo de exemplo `.env.example` para `.env`:
+
+```bash
 cp .env.example .env
 ```
 
----
-
-### 3. Executando Localmente (com SQLite out-of-the-box)
+### 3. Povoar o Banco de Dados com Dados de Demonstração
 
 ```bash
-# Opcional: Popule dados de demonstração
 python scripts/seed_data.py
-
-# Inicie o servidor FastAPI com live-reload
-uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-* 🖥️ **Painel Web & Simulador WhatsApp**: Abra [http://localhost:8000/](http://localhost:8000/) no navegador.
-* 📚 **Documentação Interativa Swagger**: Acesse [http://localhost:8000/docs](http://localhost:8000/docs).
+### 4. Iniciar o Servidor de Desenvolvimento
+
+```bash
+uvicorn main:app --reload --port 8000
+```
+
+Acesse:
+* 🖥️ **Painel Web**: [http://localhost:8000](http://localhost:8000)
+* 📑 **Documentação Swagger (OpenAPI)**: [http://localhost:8000/docs](http://localhost:8000/docs)
 
 ---
 
-### 4. Executando com Docker Compose (FastAPI + PostgreSQL 16)
+## 🐳 Executando com Docker Compose
+
+Para subir a aplicação completa com **FastAPI + PostgreSQL 16**:
 
 ```bash
-# Subir aplicação e banco PostgreSQL
-docker compose up --build -d
+# Construir e iniciar os containers
+docker compose up -d --build
 
 # Visualizar logs
 docker compose logs -f api
@@ -201,7 +225,7 @@ tests/test_webhook.py::test_webhook_get_verification_invalid_token PASSED [ 86%]
 tests/test_webhook.py::test_webhook_post_direct_mock PASSED              [ 93%]
 tests/test_webhook.py::test_webhook_post_meta_cloud_api_format PASSED    [100%]
 
-======================= 15 passed in 0.93s =======================
+======================= 15 passed in 0.85s =======================
 ```
 
 ---
@@ -253,30 +277,25 @@ Menu interativo:
 
 ## 🌐 Deploy em Produção
 
-### 🔺 Opção 1: Deploy na Vercel (Recomendado para Preview & Serverless)
-O projeto já está configurado com `vercel.json` e o entrypoint serverless `api/index.py`:
+### 🔺 Deploy na Vercel (Preview & Serverless)
+O projeto já está configurado com `vercel.json` e `api/index.py`:
 
-1. **Via Vercel CLI**:
-   ```bash
-   npm i -g vercel
-   vercel
-   ```
-2. **Via Painel Web da Vercel (GitHub Integration)**:
-   * Importe seu repositório no dashboard da [Vercel](https://vercel.com).
-   * O framework será detectado automaticamente como **Other** (com base no `vercel.json`).
-   * (Opcional) Adicione variáveis de ambiente como `WHATSAPP_VERIFY_TOKEN` e `DATABASE_URL` (PostgreSQL / Supabase / Neon). Caso não adicione, o preview utilizará automaticamente o SQLite em `/tmp` com dados de demonstração populados.
+🔗 **Preview ao vivo**: [https://servicedesk-bot-w8kr.vercel.app](https://servicedesk-bot-w8kr.vercel.app)
+
+1. Importe o repositório no dashboard da [Vercel](https://vercel.com).
+2. O framework preset será detectado automaticamente.
+3. Clique em **Deploy** — a aplicação rodará com auto-seeding em SQLite temporário ou PostgreSQL configurado em `DATABASE_URL`.
 
 ---
 
-### 🚀 Opção 2: Deploy no Render / Railway / Fly.io
+### 🚀 Deploy no Render / Railway / Fly.io
 1. Conecte este repositório no [Render](https://render.com) ou [Railway](https://railway.app).
-2. Adicione as variáveis de ambiente baseadas no `.env.example`.
-3. Configure o **Start Command**:
+2. Configure o **Start Command**:
    ```bash
-   uvicorn app.main:app --host 0.0.0.0 --port $PORT
+   uvicorn main:app --host 0.0.0.0 --port $PORT
    ```
-4. Configure a URL do webhook no painel do **Meta for Developers**:
-   * **Callback URL**: `https://seu-app.vercel.app/api/webhook` (ou do Render/Railway)
+3. Configure a URL do webhook no painel do **Meta for Developers**:
+   * **Callback URL**: `https://servicedesk-bot-w8kr.vercel.app/api/webhook` (ou do seu servidor)
    * **Verify Token**: O mesmo valor definido em `WHATSAPP_VERIFY_TOKEN`.
 
 ---
