@@ -3,6 +3,7 @@ import os
 import logging
 from pathlib import Path
 from contextlib import asynccontextmanager
+from starlette.types import ASGIApp, Scope, Receive, Send
 from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -23,6 +24,24 @@ logging.basicConfig(
 logger = logging.getLogger("servicedesk-bot")
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+
+class VercelPathFixMiddleware:
+    """Middleware to normalize paths rewritten by Vercel serverless functions."""
+    def __init__(self, app: ASGIApp):
+        self.app = app
+
+    async def __call__(self, scope: Scope, receive: Receive, send: Send):
+        if scope["type"] == "http":
+            path = scope.get("path", "")
+            for prefix in ("/api/index.py", "/api/index"):
+                if path == prefix or path == prefix + "/":
+                    scope["path"] = "/"
+                    break
+                elif path.startswith(prefix + "/"):
+                    scope["path"] = path[len(prefix):]
+                    break
+        await self.app(scope, receive, send)
 
 
 def ensure_initial_seed(db):
@@ -80,6 +99,9 @@ API corporativa de autoatendimento, diagnóstico N1 de infraestrutura e gestão 
     redoc_url="/redoc"
 )
 
+# Vercel Path Normalization Middleware
+app.add_middleware(VercelPathFixMiddleware)
+
 # CORS Configuration
 app.add_middleware(
     CORSMiddleware,
@@ -116,6 +138,8 @@ async def serve_js():
 
 
 @app.get("/", response_class=HTMLResponse, include_in_schema=False)
+@app.get("/api/index", response_class=HTMLResponse, include_in_schema=False)
+@app.get("/api/index.py", response_class=HTMLResponse, include_in_schema=False)
 async def serve_dashboard_ui(request: Request):
     """Serve the modern Service Desk Web Dashboard & WhatsApp Web Simulator."""
     html_content = get_html_content()
